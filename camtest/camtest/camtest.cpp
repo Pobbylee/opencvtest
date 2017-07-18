@@ -10,12 +10,19 @@ int main(void)
 	if (!cap.isOpened())
 		cout << "Cannot open camera !" << endl, exit(0);
 
-	Mat frame;
-
+	Mat frame, grayImage, edgeImage;
+	
 	while (1)
 	{
 		cap >> frame;
+		if (frame.empty())
+			break;
+
+		cvtColor(frame, grayImage, COLOR_BGR2GRAY);
+		Canny(grayImage, edgeImage, 80, 150, 3);
+
 		imshow("Camera Image", frame);
+		imshow("Edge Image", edgeImage);
 
 		if (waitKey(10) == 27) break;
 	}
